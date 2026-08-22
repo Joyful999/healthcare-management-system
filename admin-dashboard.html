@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin Overview — MEDICORE</title>
+<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="css/components.css">
+<link rel="stylesheet" href="css/forms.css">
+<link rel="stylesheet" href="css/dashboard.css">
+<link rel="stylesheet" href="css/calendar.css">
+<link rel="stylesheet" href="css/analytics.css">
+<link rel="stylesheet" href="css/responsive.css">
+</head>
+<body data-page="admin-dashboard.html">
+<a class="skip-link" href="#main">Skip to content</a>
+<div class="app-shell">
+  <nav class="sidebar" id="sidebarSlot" aria-label="Primary navigation"></nav>
+  <div class="main-col">
+    <header class="topbar" id="topbarSlot"></header>
+    <main class="page" id="main">
+      <div class="page-head">
+        <div>
+          <div class="page-eyebrow">Enterprise administration</div>
+          <h1>Overview</h1>
+          <p class="page-sub">System-wide activity across MEDICORE — demo data for portfolio purposes.</p>
+        </div>
+        <a href="reports.html" class="btn btn-secondary"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8Z"/><path d="M14 2v6h6"/></svg>Generate report</a>
+      </div>
+
+      <div class="grid grid-4" style="margin-bottom:20px;">
+        <div class="kpi-card"><div class="kpi-top"><span class="kpi-label">Total patients</span><span class="kpi-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg></span></div><div class="kpi-value" id="kpiTotalPatients">0</div><span class="kpi-delta up"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M12 19V5M5 12l7-7 7 7"/></svg>+4.2%</span></div>
+        <div class="kpi-card"><div class="kpi-top"><span class="kpi-label">Active doctors</span><span class="kpi-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 4v6a6 6 0 0 0 12 0V4"/></svg></span></div><div class="kpi-value" id="kpiActiveDoctors">0</div><span class="kpi-footnote">Across 8 departments</span></div>
+        <div class="kpi-card"><div class="kpi-top"><span class="kpi-label">Appointments today</span><span class="kpi-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M8 3v4M16 3v4M3 10h18"/></svg></span></div><div class="kpi-value" id="kpiApptsToday">0</div><span class="kpi-footnote">Live demo count</span></div>
+        <div class="kpi-card"><div class="kpi-top"><span class="kpi-label">Departments</span><span class="kpi-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="3" width="16" height="18" rx="1"/></svg></span></div><div class="kpi-value" id="kpiDepartments">0</div><span class="kpi-footnote">All operational</span></div>
+      </div>
+      <div class="grid grid-2" style="margin-bottom:20px;">
+        <div class="kpi-card"><div class="kpi-top"><span class="kpi-label">Pending requests</span><span class="kpi-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg></span></div><div class="kpi-value" id="kpiPendingRequests">0</div><span class="kpi-footnote">Awaiting review</span></div>
+        <div class="kpi-card"><div class="kpi-top"><span class="kpi-label">System status</span><span class="kpi-icon" style="background:var(--status-good-bg);color:var(--status-good);"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6 9 17l-5-5"/></svg></span></div><div class="kpi-value" style="font-size:1.2rem;color:var(--status-good);">All systems operational</div><span class="kpi-footnote">Demo status indicator</span></div>
+      </div>
+
+      <div class="dash-grid" style="margin-bottom:20px;">
+        <div class="chart-card">
+          <div class="chart-head"><div><h3>Patient registrations</h3><span class="chart-sub">Last 6 months · demo trend</span></div></div>
+          <div id="patientGrowthChart"></div>
+        </div>
+        <div class="chart-card">
+          <div class="chart-head"><div><h3>Appointment status</h3></div></div>
+          <div class="donut-wrap"><div id="apptStatusDonut"></div><div class="chart-legend" id="apptStatusLegend" style="flex-direction:column;"></div></div>
+        </div>
+      </div>
+
+      <div class="card" id="departments" style="margin-bottom:20px;">
+        <div class="card-title"><h3>Departments</h3><span class="card-meta">8 departments</span></div>
+        <div id="departmentTable"></div>
+      </div>
+
+      <div class="card" id="activity">
+        <div class="card-title"><h3>System activity</h3></div>
+        <div id="activityFeed"></div>
+      </div>
+    </main>
+  </div>
+</div>
+
+  <!-- Global Search -->
+  <div class="modal-overlay" id="globalSearchOverlay" role="dialog" aria-modal="true" aria-label="Global search">
+    <div class="modal modal-lg" style="margin-top:2vh;">
+      <div class="modal-head">
+        <div class="input-icon-wrap" style="flex:1;">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
+          <input type="text" id="globalSearchInput" class="input" placeholder="Search patients, doctors, appointments, prescriptions…" autocomplete="off">
+        </div>
+        <button class="modal-close" id="globalSearchClose" aria-label="Close search">&times;</button>
+      </div>
+      <div class="modal-body" id="globalSearchResults"></div>
+    </div>
+  </div>
+
+  <!-- Notification Drawer -->
+  <div class="drawer-overlay" id="notifDrawerOverlay"></div>
+  <aside class="drawer" id="notifDrawer" aria-label="Notifications">
+    <div class="drawer-head">
+      <h3 style="margin:0;font-size:1rem;">Notifications</h3>
+      <div style="display:flex;gap:8px;align-items:center;">
+        <button class="btn btn-ghost btn-sm" id="notifMarkAllRead">Mark all read</button>
+        <button class="modal-close" id="notifDrawerClose" aria-label="Close notifications">&times;</button>
+      </div>
+    </div>
+    <div class="drawer-body" id="notifDrawerBody"></div>
+  </aside>
+
+  <!-- Role Switch Modal -->
+  <div class="modal-overlay" id="roleSwitchModal">
+    <div class="modal">
+      <div class="modal-head"><h3>View as</h3><button class="modal-close" data-close-modal aria-label="Close">&times;</button></div>
+      <div class="modal-body">
+        <p style="font-size:.82rem;color:var(--text-muted);margin-bottom:16px;">MEDICORE is a portfolio demo — switch roles instantly without creating separate accounts. Real authentication and authorization would require a secure backend.</p>
+        <div style="display:flex;flex-direction:column;gap:10px;">
+          <button class="dropdown-item" data-role="patient" style="border:1px solid var(--border-subtle);padding:14px;border-radius:var(--r-md);">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 21c1.5-4.5 5-6 8-6s6.5 1.5 8 6"/></svg>
+            <span><strong style="display:block;">Patient</strong><span style="font-size:.76rem;color:var(--text-muted);">Alex Johnson — patient dashboard</span></span>
+          </button>
+          <button class="dropdown-item" data-role="doctor" style="border:1px solid var(--border-subtle);padding:14px;border-radius:var(--r-md);">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 4v6a6 6 0 0 0 12 0V4"/><path d="M6 4H4M18 4h2M12 16v3a3 3 0 1 0 3-3h-3Z"/></svg>
+            <span><strong style="display:block;">Doctor</strong><span style="font-size:.76rem;color:var(--text-muted);">Dr. Amara Chen — doctor dashboard</span></span>
+          </button>
+          <button class="dropdown-item" data-role="admin" style="border:1px solid var(--border-subtle);padding:14px;border-radius:var(--r-md);">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="3" width="16" height="18" rx="1"/><path d="M9 8h1M14 8h1M9 12h1M14 12h1M9 16h1M14 16h1"/></svg>
+            <span><strong style="display:block;">Administrator</strong><span style="font-size:.76rem;color:var(--text-muted);">Jordan Reyes — admin overview</span></span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+<script src="js/utils.js"></script>
+<script src="js/storage.js"></script>
+<script src="js/state.js"></script>
+<script src="js/auth.js"></script>
+<script src="js/api.js"></script>
+<script src="js/notifications.js"></script>
+<script src="js/app.js"></script>
+<script src="js/dashboard.js"></script><script>AdminDashboard.init();</script>
+</body>
+</html>

@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MEDICORE — Intelligent Healthcare Management</title>
+<meta name="description" content="MEDICORE is a frontend portfolio demonstration of a connected healthcare management platform for patients, doctors and administrators.">
+<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="css/components.css">
+<link rel="stylesheet" href="css/responsive.css">
+<style>
+  body{background:var(--bg-app);}
+  .mkt-header{position:sticky;top:0;z-index:50;background:rgba(250,251,252,.85);backdrop-filter:saturate(180%) blur(10px);border-bottom:1px solid var(--border-subtle);}
+  .mkt-header .container{display:flex;align-items:center;gap:28px;height:72px;}
+  .mkt-nav{display:flex;gap:26px;margin-left:8px;}
+  .mkt-nav a{color:var(--text-secondary);font-weight:600;font-size:.88rem;}
+  .mkt-nav a:hover{color:var(--text-primary);}
+  .mkt-header .cta-group{margin-left:auto;display:flex;align-items:center;gap:10px;}
+
+  .hero{padding:76px 0 40px;position:relative;overflow:hidden;}
+  .hero-grid{display:grid;grid-template-columns:1fr 1.1fr;gap:48px;align-items:center;}
+  .hero-eyebrow{display:inline-flex;align-items:center;gap:8px;background:var(--teal-100);color:var(--teal-600);font-size:.76rem;font-weight:700;letter-spacing:.03em;padding:6px 14px;border-radius:var(--r-full);margin-bottom:20px;}
+  .hero h1{font-size:clamp(2.1rem,4vw,3.1rem);line-height:1.08;letter-spacing:-.02em;margin-bottom:18px;}
+  .hero h1 .accent{color:var(--brand);}
+  .hero p.lead{font-size:1.05rem;color:var(--text-secondary);max-width:480px;margin-bottom:30px;}
+  .hero-ctas{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:34px;}
+  .trust-row{display:flex;gap:26px;flex-wrap:wrap;color:var(--text-muted);font-size:.8rem;}
+  .trust-row .t-item{display:flex;align-items:center;gap:7px;}
+  .trust-row svg{width:15px;height:15px;color:var(--brand);}
+
+  .preview-frame{position:relative;}
+  .preview-card{
+    background:var(--navy-950);border-radius:22px;padding:18px;box-shadow:var(--shadow-navy);
+    transform:perspective(1400px) rotateY(-6deg) rotateX(2deg);
+  }
+  .preview-inner{background:var(--gray-25);border-radius:15px;padding:18px;}
+  .preview-topbar{display:flex;align-items:center;gap:8px;margin-bottom:16px;}
+  .preview-dot{width:9px;height:9px;border-radius:50%;background:var(--gray-300);}
+  .preview-kpis{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:14px;}
+  .mini-kpi{background:var(--bg-surface);border:1px solid var(--border-subtle);border-radius:12px;padding:12px;}
+  .mini-kpi .mk-lbl{font-size:.65rem;color:var(--text-muted);font-weight:700;text-transform:uppercase;letter-spacing:.04em;}
+  .mini-kpi .mk-val{font-family:var(--font-display);font-weight:800;font-size:1.15rem;margin-top:4px;}
+  .preview-body{display:grid;grid-template-columns:1.3fr 1fr;gap:12px;}
+  .preview-panel{background:var(--bg-surface);border:1px solid var(--border-subtle);border-radius:12px;padding:14px;}
+  .preview-panel h4{font-size:.78rem;margin-bottom:10px;}
+  .float-card{position:absolute;background:var(--bg-surface);border:1px solid var(--border-subtle);border-radius:14px;padding:12px 14px;box-shadow:var(--shadow-lg);animation:float 4.5s ease-in-out infinite;}
+  .float-card.fc1{top:-18px;right:-26px;}
+  .float-card.fc2{bottom:14px;left:-30px;animation-delay:.6s;}
+  @keyframes float{0%,100%{transform:translateY(0);}50%{transform:translateY(-9px);}}
+  @media (prefers-reduced-motion:reduce){.float-card{animation:none;}}
+  @media (max-width:980px){.hero-grid{grid-template-columns:1fr;}.preview-card{transform:none;}.float-card{display:none;}}
+
+  .logos-strip{padding:26px 0;border-top:1px solid var(--border-subtle);border-bottom:1px solid var(--border-subtle);color:var(--text-muted);font-size:.78rem;}
+  .logos-strip .container{display:flex;align-items:center;gap:30px;flex-wrap:wrap;justify-content:center;}
+
+  .section{padding:76px 0;}
+  .section-head{max-width:600px;margin:0 auto 44px;text-align:center;}
+  .section-eyebrow{color:var(--brand);font-weight:700;font-size:.76rem;text-transform:uppercase;letter-spacing:.08em;margin-bottom:10px;}
+  .section-head h2{font-size:2rem;}
+  .section-head p{color:var(--text-secondary);}
+
+  .role-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;}
+  .role-card{background:var(--bg-surface);border:1px solid var(--border-subtle);border-radius:var(--r-lg);padding:26px;box-shadow:var(--shadow-xs);transition:transform .18s var(--ease),box-shadow .18s;}
+  .role-card:hover{transform:translateY(-4px);box-shadow:var(--shadow-md);}
+  .role-card .rc-icon{width:44px;height:44px;border-radius:12px;background:var(--teal-100);color:var(--teal-600);display:flex;align-items:center;justify-content:center;margin-bottom:16px;}
+  .role-card .rc-icon svg{width:22px;height:22px;}
+  .role-card h3{font-size:1.05rem;margin-bottom:8px;}
+  .role-card ul{margin-top:14px;display:flex;flex-direction:column;gap:8px;}
+  .role-card li{display:flex;align-items:center;gap:8px;font-size:.84rem;color:var(--text-secondary);}
+  .role-card li svg{width:14px;height:14px;color:var(--brand);flex:none;}
+  @media (max-width:900px){.role-cards{grid-template-columns:1fr;}}
+
+  .feature-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:18px;}
+  .feature-tile{border:1px solid var(--border-subtle);border-radius:var(--r-lg);padding:20px;background:var(--bg-surface);}
+  .feature-tile .ft-icon{width:38px;height:38px;border-radius:10px;background:var(--gray-100);color:var(--navy-700);display:flex;align-items:center;justify-content:center;margin-bottom:12px;}
+  .feature-tile h4{font-size:.92rem;margin-bottom:6px;}
+  .feature-tile p{font-size:.82rem;margin:0;}
+  @media (max-width:900px){.feature-grid{grid-template-columns:repeat(2,1fr);}}
+  @media (max-width:520px){.feature-grid{grid-template-columns:1fr;}}
+
+  .stat-band{background:var(--navy-950);color:#fff;border-radius:24px;padding:44px;position:relative;overflow:hidden;}
+  .stat-band::before{content:'';position:absolute;inset:0;background:radial-gradient(circle at 85% 20%,rgba(61,196,184,.25),transparent 50%);}
+  .stat-band .container{position:relative;padding:0;}
+  .stat-band-grid{display:grid;grid-template-columns:1fr 1fr;gap:34px;align-items:center;}
+  .stat-band h2{color:#fff;font-size:1.7rem;max-width:420px;}
+  .stat-band p{color:var(--text-on-navy-dim);max-width:420px;}
+  .stat-band-stats{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+  .sb-stat{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:14px;padding:16px;}
+  .sb-stat .sbs-val{font-family:var(--font-display);font-weight:800;font-size:1.6rem;color:#fff;}
+  .sb-stat .sbs-lbl{font-size:.76rem;color:var(--text-on-navy-dim);margin-top:4px;}
+  @media (max-width:860px){.stat-band-grid{grid-template-columns:1fr;}.stat-band{padding:30px 22px;}}
+
+  .cta-band{text-align:center;padding:70px 0;}
+  .cta-band h2{font-size:1.9rem;margin-bottom:12px;}
+  .cta-band p{max-width:460px;margin:0 auto 26px;}
+
+  .mkt-footer{border-top:1px solid var(--border-subtle);padding:50px 0 30px;}
+  .footer-grid{display:grid;grid-template-columns:1.4fr repeat(3,1fr);gap:30px;margin-bottom:36px;}
+  .footer-grid h5{font-size:.78rem;text-transform:uppercase;letter-spacing:.05em;color:var(--text-muted);margin-bottom:12px;}
+  .footer-grid a{display:block;font-size:.86rem;color:var(--text-secondary);margin-bottom:9px;}
+  .footer-grid a:hover{color:var(--brand);}
+  .footer-bottom{display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px;color:var(--text-muted);font-size:.78rem;padding-top:24px;border-top:1px solid var(--border-subtle);}
+  @media (max-width:760px){.footer-grid{grid-template-columns:1fr 1fr;}}
+</style>
+</head>
+<body data-layout="none" data-page="index.html">
+<a class="skip-link" href="#main">Skip to content</a>
+
+<header class="mkt-header">
+  <div class="container">
+    <a href="index.html" class="brand"><span class="brand-mark"><svg viewBox="0 0 24 24" fill="none"><path d="M3 12h4l2-6 3 12 2-9 2 3h5" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="brand-name">MEDI<b>CORE</b></span></a>
+    <nav class="mkt-nav">
+      <a href="#platform">Platform</a>
+      <a href="#roles">Who it's for</a>
+      <a href="#health-data">Global health data</a>
+      <a href="#faq">FAQ</a>
+    </nav>
+    <div class="cta-group">
+      <a href="login.html" class="btn btn-ghost">Log in</a>
+      <a href="register.html" class="btn btn-primary">Get started</a>
+    </div>
+  </div>
+</header>
+
+<main id="main">
+  <section class="hero">
+    <div class="container hero-grid">
+      <div>
+        <span class="hero-eyebrow"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6 9 17l-5-5"/></svg> Frontend portfolio demonstration</span>
+        <h1>Healthcare, <span class="accent">Connected</span> and Intelligent.</h1>
+        <p class="lead">A modern healthcare management experience designed to connect patients, healthcare professionals and medical operations — in one calm, data-driven interface.</p>
+        <div class="hero-ctas">
+          <a href="register.html" class="btn btn-primary btn-lg">GET STARTED</a>
+          <a href="patient-dashboard.html" class="btn btn-secondary btn-lg">EXPLORE PLATFORM</a>
+        </div>
+        <div class="trust-row">
+          <span class="t-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2 4 5v6c0 5 3.4 8.5 8 11 4.6-2.5 8-6 8-11V5z"/></svg>Demo data, clearly labeled</span>
+          <span class="t-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M8 12l3 3 5-6"/></svg>Real public health datasets</span>
+          <span class="t-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 9h18"/></svg>3 role experiences</span>
+        </div>
+      </div>
+
+      <div class="preview-frame">
+        <div class="float-card fc1">
+          <div style="display:flex;align-items:center;gap:8px;">
+            <div style="width:30px;height:30px;border-radius:8px;background:var(--status-good-bg);color:var(--status-good);display:flex;align-items:center;justify-content:center;"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6 9 17l-5-5"/></svg></div>
+            <div><strong style="display:block;font-size:.8rem;">Appointment confirmed</strong><span style="font-size:.72rem;color:var(--text-muted);">Dr. Amara Chen · 9:30 AM</span></div>
+          </div>
+        </div>
+        <div class="float-card fc2">
+          <svg class="pulse-line" viewBox="0 0 160 34"><path d="M0 17h24l8-14 10 28 8-20 6 6h20l6-10 8 10h70"/></svg>
+        </div>
+        <div class="preview-card">
+          <div class="preview-inner">
+            <div class="preview-topbar"><span class="preview-dot"></span><span class="preview-dot"></span><span class="preview-dot"></span><span style="margin-left:auto;font-size:.68rem;color:var(--text-muted);font-family:var(--font-mono);">patient-dashboard</span></div>
+            <div class="preview-kpis">
+              <div class="mini-kpi"><div class="mk-lbl">Health score</div><div class="mk-val">92<span style="font-size:.7rem;color:var(--text-muted);">/100</span></div></div>
+              <div class="mini-kpi"><div class="mk-lbl">Next visit</div><div class="mk-val" style="font-size:.9rem;">Tomorrow</div></div>
+              <div class="mini-kpi"><div class="mk-lbl">Prescriptions</div><div class="mk-val">3</div></div>
+            </div>
+            <div class="preview-body">
+              <div class="preview-panel">
+                <h4>Heart rate — 7 days</h4>
+                <svg viewBox="0 0 240 70" width="100%" height="70"><polyline points="0,40 30,35 60,45 90,20 120,30 150,15 180,25 210,10 240,22" fill="none" stroke="#12A79B" stroke-width="2.5"/></svg>
+              </div>
+              <div class="preview-panel">
+                <h4>Upcoming</h4>
+                <div style="font-size:.74rem;color:var(--text-secondary);line-height:1.9;">
+                  <div>Dr. Amara Chen<br><span style="color:var(--text-muted);">Cardiology · 9:30 AM</span></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="logos-strip">
+    <div class="container">
+      <span>Built with HTML5 · CSS3 · Vanilla JavaScript</span>
+      <span>·</span><span>Public health data via World Bank Open Data</span>
+      <span>·</span><span>No backend — everything runs in your browser</span>
+    </div>
+  </div>
+
+  <section class="section" id="roles">
+    <div class="container">
+      <div class="section-head">
+        <div class="section-eyebrow">Three experiences, one platform</div>
+        <h2>Built for every seat in a care team</h2>
+        <p>Switch roles instantly in this demo to see how MEDICORE adapts for patients, doctors and administrators.</p>
+      </div>
+      <div class="role-cards">
+        <div class="role-card">
+          <div class="rc-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 21c1.5-4.5 5-6 8-6s6.5 1.5 8 6"/></svg></div>
+          <h3>For patients</h3>
+          <p>Book appointments, track health metrics, manage prescriptions and message your care team in one place.</p>
+          <ul>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6 9 17l-5-5"/></svg>Health score & vitals tracker</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6 9 17l-5-5"/></svg>Doctor search & booking</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6 9 17l-5-5"/></svg>Medication reminders</li>
+          </ul>
+          <a href="patient-dashboard.html" class="btn btn-secondary btn-sm" style="margin-top:16px;">View patient demo</a>
+        </div>
+        <div class="role-card">
+          <div class="rc-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 4v6a6 6 0 0 0 12 0V4"/><path d="M6 4H4M18 4h2M12 16v3a3 3 0 1 0 3-3h-3Z"/></svg></div>
+          <h3>For doctors</h3>
+          <p>See today's schedule, manage patient records, and issue demo prescriptions with a clear clinical workflow.</p>
+          <ul>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6 9 17l-5-5"/></svg>Daily schedule & patient stats</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6 9 17l-5-5"/></svg>Searchable patient table</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6 9 17l-5-5"/></svg>Reports & records</li>
+          </ul>
+          <a href="doctor-dashboard.html" class="btn btn-secondary btn-sm" style="margin-top:16px;">View doctor demo</a>
+        </div>
+        <div class="role-card">
+          <div class="rc-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="3" width="16" height="18" rx="1"/><path d="M9 8h1M14 8h1M9 12h1M14 12h1M9 16h1M14 16h1"/></svg></div>
+          <h3>For administrators</h3>
+          <p>Monitor departments, appointment volume and system-wide activity with enterprise-grade analytics.</p>
+          <ul>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6 9 17l-5-5"/></svg>Department distribution</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6 9 17l-5-5"/></svg>Public health trend overlays</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6 9 17l-5-5"/></svg>System activity feed</li>
+          </ul>
+          <a href="admin-dashboard.html" class="btn btn-secondary btn-sm" style="margin-top:16px;">View admin demo</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="platform" style="padding-top:0;">
+    <div class="container">
+      <div class="section-head">
+        <div class="section-eyebrow">Platform</div>
+        <h2>Everything a care operation needs</h2>
+        <p>A complete component system — calendars, analytics, messaging and records — built consistently across the app.</p>
+      </div>
+      <div class="feature-grid">
+        <div class="feature-tile"><div class="ft-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M8 3v4M16 3v4M3 10h18"/></svg></div><h4>Appointments & calendar</h4><p>Book, reschedule and manage in-person or video visits with month/week/day views.</p></div>
+        <div class="feature-tile"><div class="ft-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.6l-1-1a5.5 5.5 0 0 0-7.8 7.8l1 1L12 21l7.8-7.6 1-1a5.5 5.5 0 0 0 0-7.8Z"/></svg></div><h4>Health tracker</h4><p>Log vitals over time with trend indicators — no diagnoses, just clear demonstration ranges.</p></div>
+        <div class="feature-tile"><div class="ft-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 3v18h18"/><path d="M7 15l4-5 3 3 5-7"/></svg></div><h4>Analytics</h4><p>Patient growth, appointment volume and department activity, all in interactive charts.</p></div>
+        <div class="feature-tile"><div class="ft-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H8l-4 4V5a2 2 0 0 1 2-2h13a2 2 0 0 1 2 2z"/></svg></div><h4>Secure-style messaging</h4><p>Patient–doctor and staff conversations with read states — demo only, not a real clinical channel.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="health-data" style="padding-top:0;">
+    <div class="container">
+      <div class="stat-band">
+        <div class="stat-band-grid">
+          <div>
+            <div class="hero-eyebrow" style="background:rgba(61,196,184,.15);color:var(--teal-400);">Global Health Intelligence</div>
+            <h2>Real public health statistics, built in.</h2>
+            <p>MEDICORE's analytics pull live, real indicators from the World Bank's open health dataset — population, life expectancy and health expenditure by country — clearly separated from demo patient content.</p>
+            <a href="analytics.html" class="btn btn-primary" style="margin-top:10px;">Explore global analytics</a>
+          </div>
+          <div class="stat-band-stats" id="landingStatStrip">
+            <div class="sb-stat"><div class="sbs-val skeleton sk-line" style="width:60%;height:22px;"></div><div class="sbs-lbl">Life expectancy</div></div>
+            <div class="sb-stat"><div class="sbs-val skeleton sk-line" style="width:60%;height:22px;"></div><div class="sbs-lbl">Population</div></div>
+            <div class="sb-stat"><div class="sbs-val skeleton sk-line" style="width:60%;height:22px;"></div><div class="sbs-lbl">Health expenditure (% GDP)</div></div>
+            <div class="sb-stat"><div class="sbs-val skeleton sk-line" style="width:60%;height:22px;"></div><div class="sbs-lbl">Under-5 mortality /1,000</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="faq" style="padding-top:0;">
+    <div class="container">
+      <div class="section-head">
+        <div class="section-eyebrow">FAQ</div>
+        <h2>Good to know</h2>
+      </div>
+      <div class="grid grid-2" style="max-width:820px;margin:0 auto;">
+        <div class="card"><h4>Is this a real medical platform?</h4><p>No. MEDICORE is a frontend portfolio project. It does not store or process real patient medical records, and it is not HIPAA or GDPR compliant.</p></div>
+        <div class="card"><h4>Is patient data real?</h4><p>All patient, doctor and appointment data is fictional demo content stored only in your browser's local storage.</p></div>
+        <div class="card"><h4>Where does the health data come from?</h4><p>Country-level statistics in Global Health Intelligence come from the World Bank's public Open Data API, credited wherever shown.</p></div>
+        <div class="card"><h4>Do I need an account?</h4><p>No real account is required — use the role switcher to explore the patient, doctor and admin experiences instantly.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="cta-band">
+    <div class="container">
+      <h2>See the whole platform in minutes.</h2>
+      <p>No sign-up required — jump straight into a demo account and switch roles as you go.</p>
+      <a href="register.html" class="btn btn-primary btn-lg">GET STARTED</a>
+    </div>
+  </section>
+</main>
+
+<footer class="mkt-footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div>
+        <a href="index.html" class="brand"><span class="brand-mark"><svg viewBox="0 0 24 24" fill="none"><path d="M3 12h4l2-6 3 12 2-9 2 3h5" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="brand-name">MEDI<b>CORE</b></span></a>
+        <p style="margin-top:14px;max-width:260px;font-size:.84rem;">Intelligent Healthcare Management — a frontend portfolio demonstration. Not for real medical use.</p>
+      </div>
+      <div><h5>Platform</h5><a href="patient-dashboard.html">Patient dashboard</a><a href="doctor-dashboard.html">Doctor dashboard</a><a href="admin-dashboard.html">Admin dashboard</a><a href="analytics.html">Analytics</a></div>
+      <div><h5>Product</h5><a href="appointments.html">Appointments</a><a href="doctors.html">Doctors directory</a><a href="health.html">Health tracker</a><a href="reports.html">Reports</a></div>
+      <div><h5>Account</h5><a href="login.html">Log in</a><a href="register.html">Register</a><a href="settings.html">Settings</a></div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2026 MEDICORE. Portfolio demonstration project — not a real healthcare provider.</span>
+      <span>Public health figures: World Bank Open Data.</span>
+    </div>
+  </div>
+</footer>
+
+<script src="js/utils.js"></script>
+<script src="js/storage.js"></script>
+<script src="js/state.js"></script>
+<script src="js/auth.js"></script>
+<script src="js/api.js"></script>
+<script>
+  AppState.ensureSeeded();
+  Auth.ensureUsers();
+  (async () => {
+    const data = await HealthAPI.getCountryHealthData('NGA');
+    const strip = document.getElementById('landingStatStrip');
+    if (!strip) return;
+    const vals = [
+      data.lifeExpectancy ? data.lifeExpectancy.toFixed(1) + ' yrs' : '—',
+      data.population ? (data.population/1e6).toFixed(1) + 'M' : '—',
+      data.healthExpenditure ? data.healthExpenditure.toFixed(1) + '%' : '—',
+      data.under5Mortality ? data.under5Mortality.toFixed(1) : '—',
+    ];
+    strip.querySelectorAll('.sbs-val').forEach((el, i) => { el.classList.remove('skeleton','sk-line'); el.style.width=''; el.style.height=''; el.textContent = vals[i]; });
+  })();
+</script>
+</body>
+</html>

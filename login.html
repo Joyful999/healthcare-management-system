@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Log in — MEDICORE</title>
+<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="css/components.css">
+<link rel="stylesheet" href="css/forms.css">
+<link rel="stylesheet" href="css/responsive.css">
+</head>
+<body data-layout="none" data-page="login.html">
+<a class="skip-link" href="#main">Skip to content</a>
+<div class="auth-shell">
+  <div class="auth-visual">
+    <a href="index.html" class="brand" style="color:#fff;"><span class="brand-mark"><svg viewBox="0 0 24 24" fill="none"><path d="M3 12h4l2-6 3 12 2-9 2 3h5" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="brand-name">MEDI<b style="color:#3DC4B8;">CORE</b></span></a>
+    <div>
+      <svg class="pulse-line" viewBox="0 0 300 34" style="width:220px;margin-bottom:24px;"><path d="M0 17h30l10-14 12 28 10-20 8 6h24l8-10 10 10h188" stroke="#3DC4B8"/></svg>
+      <h2 style="color:#fff;font-size:1.8rem;max-width:360px;">Welcome back to intelligent healthcare management.</h2>
+      <p style="color:var(--text-on-navy-dim);max-width:340px;">Log in to your demo account to explore the patient, doctor or administrator experience.</p>
+    </div>
+    <div style="font-size:.78rem;color:var(--text-on-navy-dim);">© 2026 MEDICORE — frontend portfolio demonstration.</div>
+  </div>
+  <div class="auth-form-col">
+    <div class="auth-form-inner">
+      <h1 style="font-size:1.5rem;">Log in</h1>
+      <p style="margin-bottom:20px;">Demo authentication only. No real credentials should be entered.</p>
+
+      <div class="banner-demo" style="margin-bottom:18px;font-size:.78rem;">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 9v4m0 4h.01M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0Z"/></svg>
+        Try: patient@medicore.demo · doctor@medicore.demo · admin@medicore.demo — password: demo1234
+      </div>
+
+      <form id="loginForm">
+        <div class="field"><label for="loginEmail">Email</label>
+          <div class="input-icon-wrap"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m2 7 10 6 10-6"/></svg><input class="input" id="loginEmail" type="email" placeholder="you@medicore.demo" required></div>
+        </div>
+        <div class="field"><label for="loginPassword">Password</label>
+          <div class="input-icon-wrap">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="10" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+            <input class="input" id="loginPassword" type="password" placeholder="••••••••" required>
+            <button type="button" class="pw-toggle" id="pwToggle" aria-label="Show password"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="17" height="17"><path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7Z"/><circle cx="12" cy="12" r="3"/></svg></button>
+          </div>
+        </div>
+        <div class="flex-between" style="margin-bottom:18px;">
+          <label class="checkbox-row"><input type="checkbox"> Remember me</label>
+          <a href="#" style="font-size:.82rem;">Forgot password?</a>
+        </div>
+        <div id="loginError" class="alert alert-critical" style="display:none;margin-bottom:14px;"></div>
+        <button class="btn btn-primary btn-block btn-lg" type="submit">Log in</button>
+      </form>
+
+      <div class="divider"></div>
+      <p style="text-align:center;font-size:.85rem;">Don't have an account? <a href="register.html">Register</a></p>
+      <p style="text-align:center;"><a href="index.html" style="font-size:.82rem;color:var(--text-muted);">&larr; Back to homepage</a></p>
+    </div>
+  </div>
+</div>
+
+<script src="js/utils.js"></script>
+<script src="js/storage.js"></script>
+<script src="js/state.js"></script>
+<script src="js/auth.js"></script>
+<script>
+  AppState.ensureSeeded(); Auth.ensureUsers();
+  document.getElementById('pwToggle').addEventListener('click', () => {
+    const input = document.getElementById('loginPassword');
+    input.type = input.type === 'password' ? 'text' : 'password';
+  });
+  document.getElementById('loginForm').addEventListener('submit', (e) => {
+    e.preventDefault();
+    const email = document.getElementById('loginEmail').value;
+    const password = document.getElementById('loginPassword').value;
+    const result = Auth.login(email, password);
+    const errEl = document.getElementById('loginError');
+    if (!result.ok){ errEl.textContent = result.error; errEl.style.display = 'flex'; return; }
+    const target = { patient:'patient-dashboard.html', doctor:'doctor-dashboard.html', admin:'admin-dashboard.html' }[result.user.role];
+    location.href = target;
+  });
+</script>
+</body>
+</html>

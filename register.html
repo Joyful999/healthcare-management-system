@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Register — MEDICORE</title>
+<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="css/components.css">
+<link rel="stylesheet" href="css/forms.css">
+<link rel="stylesheet" href="css/responsive.css">
+</head>
+<body data-layout="none" data-page="register.html">
+<a class="skip-link" href="#main">Skip to content</a>
+<div class="auth-shell">
+  <div class="auth-visual">
+    <a href="index.html" class="brand" style="color:#fff;"><span class="brand-mark"><svg viewBox="0 0 24 24" fill="none"><path d="M3 12h4l2-6 3 12 2-9 2 3h5" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="brand-name">MEDI<b style="color:#3DC4B8;">CORE</b></span></a>
+    <div>
+      <h2 style="color:#fff;font-size:1.8rem;max-width:360px;">Create a demo account in seconds.</h2>
+      <p style="color:var(--text-on-navy-dim);max-width:340px;">Choose the role you'd like to explore — patient, doctor or administrator — no real information required.</p>
+    </div>
+    <div style="font-size:.78rem;color:var(--text-on-navy-dim);">© 2026 MEDICORE — frontend portfolio demonstration.</div>
+  </div>
+  <div class="auth-form-col">
+    <div class="auth-form-inner">
+      <h1 style="font-size:1.5rem;">Create your account</h1>
+      <p style="margin-bottom:20px;">Demo authentication only. No real credentials should be entered.</p>
+
+      <form id="registerForm">
+        <div class="field"><label>I am a…</label>
+          <div class="role-select" id="roleSelect">
+            <div class="role-option selected" data-role="patient"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 21c1.5-4.5 5-6 8-6s6.5 1.5 8 6"/></svg><span>Patient</span></div>
+            <div class="role-option" data-role="doctor"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 4v6a6 6 0 0 0 12 0V4"/></svg><span>Doctor</span></div>
+            <div class="role-option" data-role="admin"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="3" width="16" height="18" rx="1"/></svg><span>Admin</span></div>
+          </div>
+        </div>
+        <div class="field"><label for="regName">Full name</label><input class="input" id="regName" placeholder="Jane Doe" required></div>
+        <div class="field"><label for="regEmail">Email</label><input class="input" id="regEmail" type="email" placeholder="you@medicore.demo" required></div>
+        <div class="field"><label for="regPassword">Password</label><input class="input" id="regPassword" type="password" placeholder="Minimum 6 characters" required minlength="6"></div>
+        <div id="regError" class="alert alert-critical" style="display:none;margin-bottom:14px;"></div>
+        <button class="btn btn-primary btn-block btn-lg" type="submit">Create account</button>
+      </form>
+
+      <div class="divider"></div>
+      <p style="text-align:center;font-size:.85rem;">Already have an account? <a href="login.html">Log in</a></p>
+      <p style="text-align:center;"><a href="index.html" style="font-size:.82rem;color:var(--text-muted);">&larr; Back to homepage</a></p>
+    </div>
+  </div>
+</div>
+
+<script src="js/utils.js"></script>
+<script src="js/storage.js"></script>
+<script src="js/state.js"></script>
+<script src="js/auth.js"></script>
+<script>
+  AppState.ensureSeeded(); Auth.ensureUsers();
+  let selectedRole = 'patient';
+  document.querySelectorAll('#roleSelect .role-option').forEach(opt => opt.addEventListener('click', () => {
+    document.querySelectorAll('#roleSelect .role-option').forEach(o => o.classList.remove('selected'));
+    opt.classList.add('selected'); selectedRole = opt.dataset.role;
+  }));
+  document.getElementById('registerForm').addEventListener('submit', (e) => {
+    e.preventDefault();
+    const name = document.getElementById('regName').value;
+    const email = document.getElementById('regEmail').value;
+    const password = document.getElementById('regPassword').value;
+    const result = Auth.register({ name, email, password, role: selectedRole });
+    const errEl = document.getElementById('regError');
+    if (!result.ok){ errEl.textContent = result.error; errEl.style.display = 'flex'; return; }
+    const target = { patient:'patient-dashboard.html', doctor:'doctor-dashboard.html', admin:'admin-dashboard.html' }[result.user.role];
+    location.href = target;
+  });
+</script>
+</body>
+</html>
